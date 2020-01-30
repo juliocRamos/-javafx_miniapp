@@ -34,12 +34,12 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void onCadastroDepartamentoMenuItemAction() {
-		System.out.println("Departamento item click");
+		loadView("/gui/views/DepartamentoView.fxml");
 	}
 
 	@FXML
 	public void onSobreMenuItemAction() {
-		loadView("/gui/views/Sobre.fxml");
+		loadView("/gui/views/SobreView.fxml");
 	}
 
 	@Override
