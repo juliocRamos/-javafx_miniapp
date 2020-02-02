@@ -44,7 +44,8 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void onSobreMenuItemAction() {
-		loadView("/model/gui/views/SobreView.fxml", x -> {});
+		loadView("/model/gui/views/SobreView.fxml", x -> {
+		});
 	}
 
 	@Override
@@ -58,15 +59,15 @@ public class MainController implements Initializable {
 			VBox newVBox = loader.load();
 			Scene mainScene = Main.getMainScene();
 			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
+
 			Node mainMenu = mainVBox.getChildren().get(0);
 			mainVBox.getChildren().clear();
 			mainVBox.getChildren().add(mainMenu);
 			mainVBox.getChildren().addAll(newVBox.getChildren());
-			
+
 			T controller = loader.getController();
 			initializeAction.accept(controller);
-			
+
 		} catch (IOException ex) {
 			Alerts.showAlert("Exception occurred", "Error loading view", ex.getMessage(), AlertType.ERROR);
 		}

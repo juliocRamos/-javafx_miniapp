@@ -1,10 +1,20 @@
 package model.entities;
 
-public class Departamento {
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
+public class Departamento implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 
 	private String nome;
+
+	public Departamento() {
+	}
 
 	public Departamento(int id, String nome) {
 		this.id = id;
@@ -25,5 +35,42 @@ public class Departamento {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public static Departamento getInstanceFromResultSet(ResultSet rs) throws SQLException {
+		Departamento dep = new Departamento();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setNome(rs.getString("DepName"));
+		return dep;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 37 * hash + Objects.hashCode(this.id);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Departamento other = (Departamento) obj;
+		if (!Objects.equals(this.id, other.id)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return id + " - " + nome;
 	}
 }
