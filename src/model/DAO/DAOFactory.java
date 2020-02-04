@@ -6,7 +6,7 @@ import model.DAO.DAOImpl.VendedorDAO;
 
 public class DAOFactory {
     public static VendedorDAO createVendedorDAO() {
-        return new VendedorDAO(ConnectionHandler.getConnection());
+		return new VendedorDAO(ConnectionHandler.getConnection());
     }
     
     public static DepartamentoDAO createDepartamentoDAO() {

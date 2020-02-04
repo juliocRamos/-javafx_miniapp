@@ -13,4 +13,12 @@ public class DepartamentoService {
 	public List<Departamento> findAll() {
 		return dao.findAllEntities();
 	}
+	
+	public void saveOrUpdate(Departamento entity) {
+		if (entity.getId() == null) {
+			dao.insert(entity);
+		} else {
+			dao.update(entity);
+		}
+	}
 }

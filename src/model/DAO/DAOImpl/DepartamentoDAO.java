@@ -28,9 +28,9 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 		try {
 			String query = ""   //
 					+ "INSERT INTO departamento" //
-					+ "  (nome, email, nascimento, salario, departamentoid)" //
+					+ "  (nome)" //
 					+ "VALUES" //
-					+ "  (?,?,?,?,?)"; //
+					+ "  (?)"; //
 
 			st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -61,7 +61,7 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 		PreparedStatement st = null;
 		try {
 			String query = ""  //
-					+ "UPDATE vendedor" //
+					+ "UPDATE departamento" //
 					+ "  SET nome = ? " //
 					+ "WHERE id = ?"; //
 
@@ -84,7 +84,7 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 		try {
 			String query = "" //
 					+ "DELETE FROM " //
-					+ "  vendedor" //
+					+ "  departamento" //
 					+ "WHERE id = ?"; //
 
 			st = conn.prepareStatement(query);
@@ -142,7 +142,7 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 			st = conn.prepareStatement(query);
 			rs = st.executeQuery();
 			List<Departamento> departamentos = new ArrayList<>();
-			
+
 			while (rs.next()) {
 				Departamento dep = new Departamento();
 				dep.setId(rs.getInt("id"));

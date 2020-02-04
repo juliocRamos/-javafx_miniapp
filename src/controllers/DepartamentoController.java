@@ -28,25 +28,26 @@ import utils.GuiUtilities;
 public class DepartamentoController implements Initializable {
 
 	private DepartamentoService service;
-	
+
 	@FXML
 	private TableView<Departamento> tableDepartamentos;
-	
+
 	@FXML
 	private TableColumn<Departamento, Integer> tableColumnId;
-	
+
 	@FXML
 	private TableColumn<Departamento, String> tableColumnNome;
 
 	@FXML
 	private Button buttonInserir;
-	
+
 	private ObservableList<Departamento> observableListDepartamento;
 
 	@FXML
 	public void onButtonInserirAction(ActionEvent event) {
 		Stage parentStage = GuiUtilities.getCurrentStage(event);
-		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml");
+		Departamento entity = new Departamento();
+		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
 	}
 
 	@Override
@@ -68,15 +69,20 @@ public class DepartamentoController implements Initializable {
 		observableListDepartamento = FXCollections.observableArrayList(list);
 		tableDepartamentos.setItems(observableListDepartamento);
 	}
-	
+
 	public void setDepartamentoServico(DepartamentoService service) {
 		this.service = service;
 	}
-	
-	private void createDialogForm(Stage parentStage, String absoluteName) {
+
+	private void createDialogForm(Stage parentStage, String absoluteName, Departamento entity) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+
+			DepartamentoFormController controller = loader.getController();
+			controller.setDepartamento(entity);
+			controller.setDepartamentoService(new DepartamentoService());
+			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Novo Departamento");
