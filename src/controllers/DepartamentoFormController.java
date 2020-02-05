@@ -1,6 +1,8 @@
 package controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import dbconn.DbException;
@@ -11,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import model.entities.Departamento;
+import model.gui.listeners.IDataChangeListener;
 import model.gui.util.Alerts;
 import model.gui.util.Constraints;
 import model.services.DepartamentoService;
@@ -22,6 +25,8 @@ public class DepartamentoFormController implements Initializable {
 	private Departamento entity;
 
 	private DepartamentoService service;
+	
+	private List<IDataChangeListener> dataChangeListeners = new ArrayList<>();
 
 	@FXML
 	private TextField textID;
@@ -47,12 +52,20 @@ public class DepartamentoFormController implements Initializable {
 		try {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
+			notifyDataChangeListeners();
 			GuiUtilities.getCurrentStage(event).close();
 			
 		} catch (DbException ex) {
 			Alerts.showAlert("Erro ao salvar Departamento", null, ex.getMessage(), AlertType.ERROR);
 		}
 
+	}
+
+	private void notifyDataChangeListeners() {
+		for (IDataChangeListener listener : dataChangeListeners) {
+			listener.onDataChange();
+		}
+		
 	}
 
 	private Departamento getFormData() {
@@ -79,6 +92,11 @@ public class DepartamentoFormController implements Initializable {
 
 	public void setDepartamento(Departamento entity) {
 		this.entity = entity;
+	}
+	
+	// Adiciona um novo changeListener.
+	public void addDataChangeListener(IDataChangeListener listener) {
+		dataChangeListeners.add(listener);
 	}
 
 	public void setDepartamentoService(DepartamentoService service) {

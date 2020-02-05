@@ -21,11 +21,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Departamento;
+import model.gui.listeners.IDataChangeListener;
 import model.gui.util.Alerts;
 import model.services.DepartamentoService;
 import utils.GuiUtilities;
 
-public class DepartamentoController implements Initializable {
+public class DepartamentoController implements Initializable, IDataChangeListener {
 
 	private DepartamentoService service;
 
@@ -82,6 +83,8 @@ public class DepartamentoController implements Initializable {
 			DepartamentoFormController controller = loader.getController();
 			controller.setDepartamento(entity);
 			controller.setDepartamentoService(new DepartamentoService());
+			// Inscreve este Controller para receber o evento.
+			controller.addDataChangeListener(this);
 			controller.updateFormData();
 
 			Stage dialogStage = new Stage();
@@ -94,5 +97,15 @@ public class DepartamentoController implements Initializable {
 		} catch (IOException ex) {
 			Alerts.showAlert("IO Exception", "Error loading view", ex.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	/**
+	 * Implementação das ações de um observer para atualizar os dados da tabela dada uma ação
+	 * que é executada em DepartamentoFormcontroller.
+	 */
+	@Override
+	public void onDataChange() {
+		updateTableView();
+		
 	}
 }
