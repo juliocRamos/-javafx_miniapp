@@ -3,7 +3,9 @@ package controllers;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import dbconn.DbException;
 import javafx.event.ActionEvent;
@@ -13,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import model.entities.Departamento;
+import model.exceptions.ValidationException;
 import model.gui.listeners.IDataChangeListener;
 import model.gui.util.Alerts;
 import model.gui.util.Constraints;
@@ -25,7 +28,7 @@ public class DepartamentoFormController implements Initializable {
 	private Departamento entity;
 
 	private DepartamentoService service;
-	
+
 	private List<IDataChangeListener> dataChangeListeners = new ArrayList<>();
 
 	@FXML
@@ -54,8 +57,12 @@ public class DepartamentoFormController implements Initializable {
 			service.saveOrUpdate(entity);
 			notifyDataChangeListeners();
 			GuiUtilities.getCurrentStage(event).close();
-			
-		} catch (DbException ex) {
+
+		}
+		catch(ValidationException ex) {
+			showAlertMessage(ex.getIssues());
+		}
+		catch (DbException ex) {
 			Alerts.showAlert("Erro ao salvar Departamento", null, ex.getMessage(), AlertType.ERROR);
 		}
 
@@ -65,13 +72,25 @@ public class DepartamentoFormController implements Initializable {
 		for (IDataChangeListener listener : dataChangeListeners) {
 			listener.onDataChange();
 		}
-		
+
 	}
 
 	private Departamento getFormData() {
 		Departamento dep = new Departamento();
+		ValidationException exception = new ValidationException("Erro de validação");
+
 		dep.setId(NumberUtilities.tryParseToInt(textID.getText()));
+
+		if (textNome.getText() == null || textNome.getText().trim().equals("")) {
+			exception.setIssues("nome", "Campo nome não pode ser vazio");
+		}
+
 		dep.setNome(textNome.getText());
+
+		if (exception.getIssues().size() > 0) {
+			throw exception;
+		}
+
 		return dep;
 	}
 
@@ -93,10 +112,19 @@ public class DepartamentoFormController implements Initializable {
 	public void setDepartamento(Departamento entity) {
 		this.entity = entity;
 	}
-	
+
 	// Adiciona um novo changeListener.
 	public void addDataChangeListener(IDataChangeListener listener) {
 		dataChangeListeners.add(listener);
+	}
+
+	private void showAlertMessage(Map<String, String> errors) {
+		Set<String> fields = errors.keySet();
+
+		if (fields.contains("nome")) {
+			Alerts.showAlert("Erro ao salvar novo Departamento", "Erro na persistência", errors.get("nome"),
+					AlertType.WARNING);
+		}
 	}
 
 	public void setDepartamentoService(DepartamentoService service) {

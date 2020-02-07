@@ -28,6 +28,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button fx:id="buttonInserir" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonInserirAction" text="Inserir" />
+            <Button fx:id="buttonEditar" mnemonicParsing="false" onAction="#onButtonEditarAction" text="Editar" />
         </items>
       </ToolBar>
    </children>

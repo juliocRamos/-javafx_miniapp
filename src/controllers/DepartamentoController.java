@@ -41,6 +41,9 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 
 	@FXML
 	private Button buttonInserir;
+	
+	@FXML
+	private Button buttonEditar;
 
 	private ObservableList<Departamento> observableListDepartamento;
 
@@ -50,6 +53,20 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 		Departamento entity = new Departamento();
 		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
 	}
+	
+	
+	@FXML
+	public void onButtonEditarAction(ActionEvent event) {
+		Stage parentStage = GuiUtilities.getCurrentStage(event);
+		Departamento entity = tableDepartamentos.getSelectionModel().getSelectedItem();
+		
+		if (entity == null) {
+			Alerts.showAlert("Erro na edição", null, "Selecione ao menos um registro para editar", AlertType.WARNING);
+		}
+		
+		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
+	}
+	
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -69,6 +86,7 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 		List<Departamento> list = service.findAll();
 		observableListDepartamento = FXCollections.observableArrayList(list);
 		tableDepartamentos.setItems(observableListDepartamento);
+		tableDepartamentos.refresh();
 	}
 
 	public void setDepartamentoServico(DepartamentoService service) {
@@ -106,6 +124,5 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 	@Override
 	public void onDataChange() {
 		updateTableView();
-		
 	}
 }
