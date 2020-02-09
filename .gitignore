@@ -30,3 +30,6 @@ build/
 nbbuild/
 dist/
 nbdist/
+
+# Custom Eclipse files
+.settings/

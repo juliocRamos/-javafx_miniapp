@@ -10,6 +10,7 @@ import java.util.List;
 
 import dbconn.ConnectionHandler;
 import dbconn.DbException;
+import dbconn.DbIntegrityException;
 import model.DAO.DAOInterfaces.IbasicDAO;
 import model.entities.Departamento;
 
@@ -83,16 +84,16 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 		PreparedStatement st = null;
 		try {
 			String query = "" //
-					+ "DELETE FROM " //
-					+ "  departamento" //
-					+ "WHERE id = ?"; //
+					+ " DELETE FROM " //
+					+ "  departamento " //
+					+ " WHERE id = ?"; //
 
 			st = conn.prepareStatement(query);
 			st.setInt(1, id);
 			st.executeUpdate();
 
 		} catch (SQLException ex) {
-			throw new DbException(ex.getMessage());
+			throw new DbIntegrityException(ex.getMessage());
 		} finally {
 			ConnectionHandler.closeStatement(st);
 		}

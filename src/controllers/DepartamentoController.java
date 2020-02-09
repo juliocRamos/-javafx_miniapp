@@ -3,8 +3,10 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dbconn.DbIntegrityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,6 +33,8 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 
 	private DepartamentoService service;
 
+	private ObservableList<Departamento> observableListDepartamento;
+
 	@FXML
 	private TableView<Departamento> tableDepartamentos;
 
@@ -44,8 +49,9 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 	
 	@FXML
 	private Button buttonEditar;
-
-	private ObservableList<Departamento> observableListDepartamento;
+	
+	@FXML
+	private Button buttonRemover;
 
 	@FXML
 	public void onButtonInserirAction(ActionEvent event) {
@@ -65,8 +71,30 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 		}
 		
 		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
+		updateTableView();
 	}
 	
+	
+	@FXML
+	public void onButtonRemoveAction(ActionEvent event) {
+		Stage pareStage = GuiUtilities.getCurrentStage(event);
+		Departamento entity = tableDepartamentos.getSelectionModel().getSelectedItem();
+		
+		if (entity == null) {
+			Alerts.showAlert("Erro na remoção", null, "Selecione ao menos um registro para remover", AlertType.WARNING);
+		}
+		
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Deseja realmente remover?");
+		
+		if (result.get() == ButtonType.OK) {
+			try {
+				service.remove(entity);
+				updateTableView();
+			} catch (DbIntegrityException ex) {
+				Alerts.showAlert("Erro ao remover Departamento", null, ex.getMessage(), AlertType.ERROR);
+			}
+		}
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {

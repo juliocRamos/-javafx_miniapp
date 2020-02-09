@@ -29,6 +29,7 @@
         <items>
           <Button fx:id="buttonInserir" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onButtonInserirAction" text="Inserir" />
             <Button fx:id="buttonEditar" mnemonicParsing="false" onAction="#onButtonEditarAction" text="Editar" />
+            <Button fx:id="buttonRemover" mnemonicParsing="false" onAction="#onButtonRemoveAction" text="Remover" />
         </items>
       </ToolBar>
    </children>
