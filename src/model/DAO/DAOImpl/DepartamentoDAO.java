@@ -136,7 +136,7 @@ public class DepartamentoDAO implements IbasicDAO<Departamento> {
 		
 		try {
 			String query = ""
-					+ "SELECT *" //
+					+ "SELECT * " //
 					+ "  FROM departamento " //
 					+ " ORDER BY nome";  //
 			

@@ -39,8 +39,8 @@ public class Departamento implements Serializable {
 
 	public static Departamento getInstanceFromResultSet(ResultSet rs) throws SQLException {
 		Departamento dep = new Departamento();
-		dep.setId(rs.getInt("DepartmentId"));
-		dep.setNome(rs.getString("DepName"));
+		dep.setId(rs.getInt("departamentoid"));
+		dep.setNome(rs.getString("depNome"));
 		return dep;
 	}
 

@@ -46,10 +46,10 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 
 	@FXML
 	private Button buttonInserir;
-	
+
 	@FXML
 	private Button buttonEditar;
-	
+
 	@FXML
 	private Button buttonRemover;
 
@@ -59,39 +59,37 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 		Departamento entity = new Departamento();
 		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
 	}
-	
-	
+
 	@FXML
 	public void onButtonEditarAction(ActionEvent event) {
 		Stage parentStage = GuiUtilities.getCurrentStage(event);
 		Departamento entity = tableDepartamentos.getSelectionModel().getSelectedItem();
-		
+
 		if (entity == null) {
 			Alerts.showAlert("Erro na edição", null, "Selecione ao menos um registro para editar", AlertType.WARNING);
 		}
-		
+
 		createDialogForm(parentStage, "/model/gui/views/DepartamentoForm.fxml", entity);
 		updateTableView();
 	}
-	
-	
+
 	@FXML
 	public void onButtonRemoveAction(ActionEvent event) {
 		Stage pareStage = GuiUtilities.getCurrentStage(event);
 		Departamento entity = tableDepartamentos.getSelectionModel().getSelectedItem();
-		
+
 		if (entity == null) {
 			Alerts.showAlert("Erro na remoção", null, "Selecione ao menos um registro para remover", AlertType.WARNING);
 		}
-		
+
 		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Deseja realmente remover?");
-		
+
 		if (result.get() == ButtonType.OK) {
 			try {
 				service.remove(entity);
 				updateTableView();
 			} catch (DbIntegrityException ex) {
-				Alerts.showAlert("Erro ao remover Departamento", null, ex.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Error", null, ex.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
@@ -146,8 +144,8 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 	}
 
 	/**
-	 * Implementação das ações de um observer para atualizar os dados da tabela dada uma ação
-	 * que é executada em DepartamentoFormcontroller.
+	 * Implementação das ações de um observer para atualizar os dados da tabela dada
+	 * uma ação que é executada em DepartamentoFormcontroller.
 	 */
 	@Override
 	public void onDataChange() {
