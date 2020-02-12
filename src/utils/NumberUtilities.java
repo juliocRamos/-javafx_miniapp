@@ -8,4 +8,12 @@ public class NumberUtilities {
 			return null;
 		}
 	}
+	
+	public static Double tryParseToDouble(String str) {
+		try {
+			return Double.parseDouble(str);
+		} catch (NumberFormatException ex) {
+			return null;
+		}
+	}
 }

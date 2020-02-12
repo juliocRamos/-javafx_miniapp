@@ -29,9 +29,10 @@ public class VendedorDAO implements IbasicDAO<Vendedor> {
 		PreparedStatement st = null;
 
 		try {
-			String query = "" + " INSERT INTO vendedor" //
-					+ "    (nome, email, nascimento, salario, departamentoid)" //
-					+ " VALUES " + "    (?,?,?,?,?)";
+			String query = "" // 
+		+ " INSERT INTO vendedor" //
+		+ "    (nome, email, nascimento, salario, departamentoid)" //
+		+ " VALUES " + "    (?,?,?,?,?)";
 
 			st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -66,15 +67,16 @@ public class VendedorDAO implements IbasicDAO<Vendedor> {
 		PreparedStatement st = null;
 
 		try {
-			String query = "" + " UPDATE vendedor " //
-					+ "   SET nome = ?, email = ?, nascimento = ? " //
+			String query = "" // 
+					+ " UPDATE vendedor " //
+					+ "   SET nome = ?, email = ?, nascimento = ?, " //
 					+ "     salario = ?, departamentoid = ? " //
 					+ " WHERE id = ?";
 
 			st = conn.prepareStatement(query);
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEmail());
-			st.setDate(3, obj.getNascimento());
+			st.setDate(3, new java.sql.Date(obj.getNascimento().getTime()));
 			st.setDouble(4, obj.getSalario());
 			st.setInt(5, obj.getDepartamento().getId());
 			st.setInt(6, obj.getId());
@@ -114,7 +116,8 @@ public class VendedorDAO implements IbasicDAO<Vendedor> {
 		ResultSet rs = null;
 
 		try {
-			String query = "" + " SELECT vendedor.*" //
+			String query = "" // 
+					+ " SELECT vendedor.*" //
 					+ "   departamento.nome as depNome " //
 					+ " FROM vendedor " //
 					+ "   JOIN departamento " //
@@ -148,7 +151,8 @@ public class VendedorDAO implements IbasicDAO<Vendedor> {
 		ResultSet rs = null;
 
 		try {
-			String query = "" + " SELECT vendedor.*, " //
+			String query = "" // 
+					+ " SELECT vendedor.*, " //
 					+ "    departamento.nome as depNome " //
 					+ " FROM vendedor " // 
 					+ "   JOIN departamento " + // 
@@ -187,9 +191,14 @@ public class VendedorDAO implements IbasicDAO<Vendedor> {
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement("" + " SELECT vendedor.*, " + "  departamento.nome as DepNome "
-					+ " FROM vendedor " + "  JOIN departamento " + "   ON vendedor.departamentoid = departamento.id "
-					+ " WHERE departamentoid = ? " + " ORDER BY nome ");
+			st = conn.prepareStatement(""  //
+					+ " SELECT vendedor.*, " // 
+					+ "  departamento.nome as DepNome " //
+					+ " FROM vendedor "  //
+					+ "  JOIN departamento " // 
+					+ "   ON vendedor.departamentoid = departamento.id " //
+					+ " WHERE departamentoid = ? " // 
+					+ " ORDER BY nome ");
 
 			st.setInt(1, departamentoID);
 			rs = st.executeQuery();

@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Vendedor implements Serializable {
+public class Vendedor extends BasicEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -68,19 +68,18 @@ public class Vendedor implements Serializable {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
-	
-    public static Vendedor getInstanceFromResultSet(ResultSet rs, Departamento dep)
-            throws SQLException {
-        Vendedor vendedor = new Vendedor();
-        vendedor.setId(rs.getInt("id"));
-        vendedor.setNome(rs.getString("nome"));
-        vendedor.setEmail(rs.getString("email"));
-        vendedor.setNascimento(rs.getDate("nascimento"));
-        vendedor.setSalario(rs.getDouble("salario"));
-        vendedor.setDepartamento(dep);
 
-        return vendedor;
-    }
+	public static Vendedor getInstanceFromResultSet(ResultSet rs, Departamento dep) throws SQLException {
+		Vendedor vendedor = new Vendedor();
+		vendedor.setId(rs.getInt("id"));
+		vendedor.setNome(rs.getString("nome"));
+		vendedor.setEmail(rs.getString("email"));
+		vendedor.setNascimento(new java.sql.Date(rs.getTimestamp("nascimento").getTime()));
+		vendedor.setSalario(rs.getDouble("salario"));
+		vendedor.setDepartamento(dep);
+
+		return vendedor;
+	}
 
 	@Override
 	public int hashCode() {

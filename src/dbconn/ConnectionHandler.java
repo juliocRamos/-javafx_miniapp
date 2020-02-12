@@ -34,6 +34,7 @@ public class ConnectionHandler {
                 throw new DbException("Falha ao encerrar conexão com "
                         + "a base de dados\n" + ex.getMessage());
             }
+            conn = null;
         }
     }
 

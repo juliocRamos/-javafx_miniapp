@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class Departamento implements Serializable {
+public class Departamento extends BasicEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

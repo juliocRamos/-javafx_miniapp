@@ -27,6 +27,7 @@ import model.entities.Departamento;
 import model.gui.listeners.IDataChangeListener;
 import model.gui.util.Alerts;
 import model.services.DepartamentoService;
+import model.services.IBasicService;
 import utils.GuiUtilities;
 
 public class DepartamentoController implements Initializable, IDataChangeListener {
@@ -75,7 +76,6 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 
 	@FXML
 	public void onButtonRemoveAction(ActionEvent event) {
-		Stage pareStage = GuiUtilities.getCurrentStage(event);
 		Departamento entity = tableDepartamentos.getSelectionModel().getSelectedItem();
 
 		if (entity == null) {
@@ -115,7 +115,7 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 		tableDepartamentos.refresh();
 	}
 
-	public void setDepartamentoServico(DepartamentoService service) {
+	public void setDepartamentoService(DepartamentoService service) {
 		this.service = service;
 	}
 
@@ -126,7 +126,7 @@ public class DepartamentoController implements Initializable, IDataChangeListene
 
 			DepartamentoFormController controller = loader.getController();
 			controller.setDepartamento(entity);
-			controller.setDepartamentoService(new DepartamentoService());
+			controller.setDepartamentoService(IBasicService.getService(DepartamentoService.class));
 			// Inscreve este Controller para receber o evento.
 			controller.addDataChangeListener(this);
 			controller.updateFormData();

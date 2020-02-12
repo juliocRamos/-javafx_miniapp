@@ -15,4 +15,5 @@ public interface IbasicDAO<T> {
     T findEntityById(int id);
     
     List<T> findAllEntities();
+    
 }
